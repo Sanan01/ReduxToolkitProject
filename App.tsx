@@ -1,39 +1,34 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
-import {useSelector, useDispatch, Provider} from 'react-redux';
-import {decrement, increment} from './src/store/counterSlice';
+import {Provider} from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import RenderLoginPage from './src/components/signInPage';
+import RenderSignUpPage from './src/components/signupPage';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import RenderCartPage from './src/components/cartPage';
+import BottomBar from './src/components/homePage';
+import RenderDashboardPage from './src/components/dashboard';
 import {store} from './src/store/store';
 
-function App() {
-  const count = useSelector(state => state.counter.value);
-  const dispatch = useDispatch();
+const Stack = createNativeStackNavigator();
 
+function App() {
+  
   return (
-    <View style={styles.container}>
-      <Pressable
-        aria-label="Increment value"
-        onPress={() => dispatch(increment())}>
-        <Text>Increment</Text>
-      </Pressable>
-      <Text>{count}</Text>
-      <Pressable
-        aria-label="Decrement value"
-        onPress={() => dispatch(decrement())}>
-        <Text>Decrement</Text>
-      </Pressable>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="loginScreen"
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="loginScreen" component={RenderLoginPage} />
+        <Stack.Screen name="signUpScreen" component={RenderSignUpPage} />
+        <Stack.Screen name="homeScreen" component={BottomBar} />
+        <Stack.Screen name="Dashboard" component={RenderDashboardPage} />
+        <Stack.Screen name="Cart" component={RenderCartPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    borderColor: 'red',
-    borderWidth: 5,
-    // alignItems: 'center',
-  },
-});
 
 export default () => {
   return (
